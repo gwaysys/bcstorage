@@ -11,7 +11,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/gwaycc/bcstorage/lib/bcrypt"
+	"github.com/gwaysys/bcstorage/lib/bcrypt"
 	"github.com/gwaylib/errors"
 )
 

@@ -3,7 +3,7 @@ package main
 import (
 	"net/http"
 
-	"github.com/gwaycc/bcstorage/lib/bcrypt"
+	"github.com/gwaysys/bcstorage/lib/bcrypt"
 	"github.com/gwaylib/errors"
 )
 

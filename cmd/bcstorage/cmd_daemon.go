@@ -7,7 +7,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/gwaycc/bcstorage/lib/cert"
+	"github.com/gwaysys/bcstorage/lib/cert"
 	"github.com/gwaylib/errors"
 	"github.com/urfave/cli/v2"
 )

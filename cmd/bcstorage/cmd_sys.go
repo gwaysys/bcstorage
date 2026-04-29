@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"path/filepath"
 
-	"github.com/gwaycc/bcstorage/lib/bcrypt"
-	"github.com/gwaycc/bcstorage/module/client"
+	"github.com/gwaysys/bcstorage/lib/bcrypt"
+	"github.com/gwaysys/bcstorage/module/client"
 	"github.com/gwaylib/errors"
 	"github.com/mitchellh/go-homedir"
 	"github.com/urfave/cli/v2"
