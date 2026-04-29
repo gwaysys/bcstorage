@@ -3,8 +3,9 @@ package main
 import (
 	"net/http"
 
-	"github.com/gwaysys/bcstorage/lib/bcrypt"
 	"github.com/gwaylib/errors"
+	"github.com/gwaylib/log"
+	"github.com/gwaysys/bcstorage/lib/bcrypt"
 )
 
 func init() {

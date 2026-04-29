@@ -7,6 +7,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/gwaylib/log"
 	"github.com/urfave/cli/v2"
 
 	"github.com/gwaysys/bcstorage/module/client"

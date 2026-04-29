@@ -5,8 +5,8 @@ go 1.19
 require (
 	github.com/fsnotify/fsnotify v1.6.0
 	github.com/google/uuid v1.3.0
-	github.com/gwaylib/errors v0.0.0-20211126090330-1931a9c4fe20
-	github.com/gwaylib/log v0.0.0-20220419074212-f1aa63899ff1
+	github.com/gwaylib/errors v0.0.4
+	github.com/gwaylib/log v0.0.7
 	github.com/urfave/cli/v2 v2.19.2
 )
 

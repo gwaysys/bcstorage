@@ -8,6 +8,7 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/gwaylib/errors"
+	"github.com/gwaylib/log"
 )
 
 func init() {

@@ -3,6 +3,7 @@ package main
 import (
 	"os"
 
+	"github.com/gwaylib/log"
 	"github.com/urfave/cli/v2"
 )
 

@@ -7,9 +7,9 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/urfave/cli/v2"
-
+	"github.com/gwaylib/log"
 	"github.com/gwaysys/bcstorage/module/client"
+	"github.com/urfave/cli/v2"
 )
 
 var uploadCmd = &cli.Command{

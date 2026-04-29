@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/gwaylib/errors"
+	"github.com/gwaylib/log"
 )
 
 type FileToken struct {
