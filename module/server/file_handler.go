@@ -73,8 +73,33 @@ func (h *FileHandler) _AddGcEvent() {
 	}
 }
 
+func (h *FileHandler) GetToken(token string) (*FileToken, error) {
+	h.tokenLk.Lock()
+	fileToken, ok := h.token[token]
+	h.tokenLk.Unlock()
+	if ok {
+		return fileToken, nil
+	}
+	fileToken = &FileToken{}
+	if err := GetLevelDB(fmt.Sprintf(_leveldb_prefix_token, token), fileToken); err != nil {
+		return nil, errors.As(err)
+	}
+	return fileToken, nil
+}
+
 // if the file is dir, the dir files will be auto grant
 func (h *FileHandler) AddToken(userSpace, file, token, grant string, expAt time.Time) error {
+	existToken, err := h.GetToken(token)
+	if err != nil {
+		if !errors.ErrNoData.Equal(err) {
+			return errors.As(err)
+		}
+		// token not exist
+	} else {
+		if existToken._space != userSpace || existToken._file != file {
+			return errors.New("token already used by other one")
+		}
+	}
 	fileToken, err := NewFileToken(
 		userSpace,
 		file,
@@ -95,19 +120,6 @@ func (h *FileHandler) AddToken(userSpace, file, token, grant string, expAt time.
 	defer h.tokenLk.Unlock()
 	h.token[token] = fileToken
 	return nil
-}
-func (h *FileHandler) GetToken(token string) (*FileToken, error) {
-	h.tokenLk.Lock()
-	fileToken, ok := h.token[token]
-	h.tokenLk.Unlock()
-	if ok {
-		return fileToken, nil
-	}
-	fileToken = &FileToken{}
-	if err := GetLevelDB(fmt.Sprintf(_leveldb_prefix_token, token), fileToken); err != nil {
-		return nil, errors.As(err)
-	}
-	return fileToken, nil
 }
 
 func (h *FileHandler) DeleteToken(token string) error {
