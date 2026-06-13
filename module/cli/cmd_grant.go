@@ -3,6 +3,7 @@ package cli
 import (
 	"fmt"
 
+	"github.com/gwaylib/errors"
 	"github.com/gwaysys/bcstorage/module/client"
 	"github.com/urfave/cli/v2"
 )
@@ -41,7 +42,7 @@ var GrantCmd = &cli.Command{
 		)
 		newToken, err := ac.NewFileToken(ctx, authFile, cctx.String("kind"), cctx.Int("exp"))
 		if err != nil {
-			panic(err)
+			return errors.As(err)
 		}
 		fmt.Printf("grant:%s, token:%s\n", cctx.String("kind"), newToken)
 		return nil

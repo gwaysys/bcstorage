@@ -7,6 +7,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/gwaylib/errors"
 	"github.com/gwaylib/log"
 	"github.com/urfave/cli/v2"
 
@@ -54,7 +55,8 @@ var DownloadCmd = &cli.Command{
 				startTime := time.Now()
 				fc := client.NewHttpClient(_httpApiFlag, cctx.String("token"))
 				if err := fc.Download(ctx, localPath, remotePath); err != nil {
-					panic(err)
+					log.Exit(1, errors.As(err).Error())
+					return
 				}
 				now := time.Now()
 				log.Infof("end download: %s->%s, took:%s", remotePath, localPath, now.Sub(startTime))

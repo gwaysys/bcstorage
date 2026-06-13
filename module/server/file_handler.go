@@ -137,7 +137,7 @@ func (h *FileHandler) VerifyToken(file, token string) (string, *FileToken, error
 		// never expired
 	} else if fileToken.expiredAt.Sub(now) < 0 {
 		// expired
-		return "", nil, errors.New("auth expired")
+		return "", nil, errors.New("auth expired").As(fileToken.grant, fileToken.expiredAt.Unix())
 	}
 
 	if len(file) == 0 {

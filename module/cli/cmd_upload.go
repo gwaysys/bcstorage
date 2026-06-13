@@ -7,6 +7,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/gwaylib/errors"
 	"github.com/gwaylib/log"
 	"github.com/gwaysys/bcstorage/module/client"
 	"github.com/urfave/cli/v2"
@@ -48,7 +49,8 @@ var UploadCmd = &cli.Command{
 				startTime := time.Now()
 				fc := client.NewHttpClient(_httpApiFlag, cctx.String("token"))
 				if err := fc.Upload(ctx, localPath, remotePath); err != nil {
-					panic(err)
+					log.Exit(1, errors.As(err).Error())
+					return
 				}
 				now := time.Now()
 				log.Infof("end upload: %s->%s, took:%s", localPath, remotePath, now.Sub(startTime))

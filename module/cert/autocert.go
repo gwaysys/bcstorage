@@ -9,10 +9,37 @@ import (
 	"math/big"
 	"net"
 	"os"
+	"path/filepath"
 	"time"
 
 	"github.com/gwaylib/errors"
 )
+
+const (
+	_root_file = "storage_root.pem"
+	_crt_file  = "storage_crt.pem"
+	_key_file  = "storage_key.pem"
+)
+
+type CustomTLSCert struct {
+	CertPath string
+}
+
+func NewCustomTLSCert(certPath string) (*CustomTLSCert, error) {
+	// check root cert
+	return &CustomTLSCert{CertPath: certPath}, nil
+}
+
+func (crt *CustomTLSCert) RootFile() string {
+	return filepath.Join(crt.CertPath, _root_file)
+}
+
+func (crt *CustomTLSCert) CertFile() string {
+	return filepath.Join(crt.CertPath, _crt_file)
+}
+func (crt *CustomTLSCert) KeyFile() string {
+	return filepath.Join(crt.CertPath, _key_file)
+}
 
 func CreateTLSCert(certPath, keyPath string, ipAddrs []net.IP) error {
 	max := new(big.Int).Lsh(big.NewInt(1), 128)

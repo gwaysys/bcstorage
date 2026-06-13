@@ -133,23 +133,37 @@ func (f *FileToken) MarshalJSON() ([]byte, error) {
 	if err := enc.WriteToken(jsontext.BeginObject); err != nil {
 		return nil, errors.As(err)
 	}
-	if err := enc.WriteToken(jsontext.String("_space")); err != nil {
-		return nil, errors.As(err)
+	if len(f._space) > 0 {
+		if err := enc.WriteToken(jsontext.String("_space")); err != nil {
+			return nil, errors.As(err)
+		}
+		if err := enc.WriteToken(jsontext.String(f._space)); err != nil {
+			return nil, errors.As(err)
+		}
 	}
-	if err := enc.WriteToken(jsontext.String(f._space)); err != nil {
-		return nil, errors.As(err)
+	if len(f._file) > 0 {
+		if err := enc.WriteToken(jsontext.String("_file")); err != nil {
+			return nil, errors.As(err)
+		}
+		if err := enc.WriteToken(jsontext.String(f._file)); err != nil {
+			return nil, errors.As(err)
+		}
 	}
-	if err := enc.WriteToken(jsontext.String("_file")); err != nil {
-		return nil, errors.As(err)
+	if len(f.grant) > 0 {
+		if err := enc.WriteToken(jsontext.String("grant")); err != nil {
+			return nil, errors.As(err)
+		}
+		if err := enc.WriteToken(jsontext.String(f.grant)); err != nil {
+			return nil, errors.As(err)
+		}
 	}
-	if err := enc.WriteToken(jsontext.String(f._file)); err != nil {
-		return nil, errors.As(err)
-	}
-	if err := enc.WriteToken(jsontext.String("exp")); err != nil {
-		return nil, errors.As(err)
-	}
-	if err := enc.WriteToken(jsontext.Int(f.expiredAt.Unix())); err != nil {
-		return nil, errors.As(err)
+	if f.expiredAt.Unix() != 0 {
+		if err := enc.WriteToken(jsontext.String("exp")); err != nil {
+			return nil, errors.As(err)
+		}
+		if err := enc.WriteToken(jsontext.Int(f.expiredAt.Unix())); err != nil {
+			return nil, errors.As(err)
+		}
 	}
 	if err := enc.WriteToken(jsontext.EndObject); err != nil {
 		return nil, errors.As(err)
