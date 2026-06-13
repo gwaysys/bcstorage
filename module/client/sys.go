@@ -145,10 +145,13 @@ func (auth *AuthClient) ChangePasswd(ctx context.Context, newPasswd string) ([]b
 // the grant == "a", the token WILL NOT BE expiress, and read only, so it can be public(NEED CONFIRM).
 // exp -- expire after 'exp' minutes, 0 default to 60 minute
 // return the auth token
-func (auth *AuthClient) NewFileToken(ctx context.Context, path, grant string, exp int) ([]byte, error) {
+func (auth *AuthClient) NewFileToken(ctx context.Context, path, grant, token string, exp int) ([]byte, error) {
 	params := url.Values{}
 	params.Add("path", path)
 	params.Add("grant", grant)
+	if len(token) > 0 {
+		params.Add("token", token)
+	}
 	params.Add("exp", strconv.Itoa(exp))
 	req, err := http.NewRequestWithContext(ctx, "POST", auth.Addr+"/sys/file/token?"+params.Encode(), nil)
 	if err != nil {

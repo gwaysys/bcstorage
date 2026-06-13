@@ -17,6 +17,11 @@ var GrantCmd = &cli.Command{
 			Usage: "'a' for readonly, and not expired",
 			Value: "",
 		},
+		&cli.StringFlag{
+			Name:  "token",
+			Usage: "specified value, using random value if not set",
+			Value: "",
+		},
 		&cli.IntFlag{
 			Name:  "exp",
 			Usage: "auth expire after exp minutes",
@@ -40,7 +45,7 @@ var GrantCmd = &cli.Command{
 			cctx.String("user"),
 			cctx.String("passwd"),
 		)
-		newToken, err := ac.NewFileToken(ctx, authFile, cctx.String("kind"), cctx.Int("exp"))
+		newToken, err := ac.NewFileToken(ctx, authFile, cctx.String("kind"), cctx.String("token"), cctx.Int("exp"))
 		if err != nil {
 			return errors.As(err)
 		}

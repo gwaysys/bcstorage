@@ -24,9 +24,12 @@ func tokenHandler(w http.ResponseWriter, r *http.Request) error {
 		if len(path) == 0 {
 			return writeMsg(w, 403, "params failed")
 		}
+		token := r.FormValue("token") // specified value, using random value if not set
 		grant := r.FormValue("grant") // grant privilege, a for public to all user, others undefined
 		expStr := r.FormValue("exp")  // minute, "" means no expire for readonly
-		token := uuid.New().String()
+		if len(token) == 0 {
+			token = uuid.New().String()
+		}
 
 		// 当 kind="a" 时，不使用 exp 参数，不设置过期时间
 		var expAt time.Time
