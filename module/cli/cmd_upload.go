@@ -1,0 +1,66 @@
+package cli
+
+import (
+	"fmt"
+	"os"
+	"os/signal"
+	"syscall"
+	"time"
+
+	"github.com/gwaylib/log"
+	"github.com/gwaysys/bcstorage/module/client"
+	"github.com/urfave/cli/v2"
+)
+
+var UploadCmd = &cli.Command{
+	Name:  "upload",
+	Usage: "[local path] [remote path]",
+	Flags: []cli.Flag{
+		&cli.StringFlag{
+			Name:  "token",
+			Usage: "auth token",
+			Value: "",
+		},
+		&cli.StringFlag{
+			Name:  "mode",
+			Usage: "write mode, support mode: 'http', 'TODO:tcp'",
+			Value: "http",
+		},
+	},
+	Action: func(cctx *cli.Context) error {
+		if !cctx.Args().Present() {
+			return fmt.Errorf("arguments with [local path] [remote path]")
+		}
+		args := cctx.Args()
+		if args.Len() != 2 {
+			return fmt.Errorf("arguments with [local path] [remote path]")
+		}
+		localPath := args.Get(0)
+		remotePath := args.Get(1)
+
+		end := make(chan os.Signal, 2)
+		switch cctx.String("mode") {
+		case "http":
+			go func() {
+				// TODO: process the download
+				ctx := cctx.Context
+				log.Infof("start upload: %s->%s", localPath, remotePath)
+				startTime := time.Now()
+				fc := client.NewHttpClient(_httpApiFlag, cctx.String("token"))
+				if err := fc.Upload(ctx, localPath, remotePath); err != nil {
+					panic(err)
+				}
+				now := time.Now()
+				log.Infof("end upload: %s->%s, took:%s", localPath, remotePath, now.Sub(startTime))
+				end <- os.Kill
+			}()
+		default:
+			return fmt.Errorf("unknow mode '%s'", cctx.String("mode"))
+
+		}
+		// TODO: show the process
+		signal.Notify(end, os.Interrupt, syscall.SIGTERM, syscall.SIGINT)
+		<-end
+		return nil
+	},
+}

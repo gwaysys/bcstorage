@@ -1,0 +1,5 @@
+bin/
+.reasonix/
+.codegraph/
+/bcstorage
+/bcstorage.exe
